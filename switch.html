@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      transition: background-color 0.5s ease;
+    }
+
+    .toggle-container {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .toggle-input {
+      display: none;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: 0.4s;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    .toggle-input:checked + .toggle-slider {
+      background-color: #333;
+    }
+
+    .toggle-input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+  </style>
+</head>
+<body>
+  <label class="toggle-container">
+    <input type="checkbox" class="toggle-input" onchange="toggleBackgroundColor()">
+    <span class="toggle-slider"></span>
+  </label>
+
+  <script>
+    function toggleBackgroundColor() {
+      const body = document.body;
+      const toggleInput = document.querySelector('.toggle-input');
+
+      if (toggleInput.checked) {
+        body.style.backgroundColor = '#333';
+      } else {
+        body.style.backgroundColor = '#f0f0f0';
+      }
+    }
+  </script>
+</body>
+</html>

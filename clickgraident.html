@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Gradient Background</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function setRandomGradient() {
+            const gradient1 = getRandomColor();
+            const gradient2 = getRandomColor();
+            document.body.style.background = `linear-gradient(45deg, ${gradient1}, ${gradient2})`;
+        }
+
+        document.addEventListener('click', () => {
+            setRandomGradient();
+        });
+
+        // Initial random background on page load
+        setRandomGradient();
+    </script>
+</body>
+</html>

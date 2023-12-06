@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luck Calculator Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>Luck Calculator Game</h1>
+
+        <div id="colorGuessSection">
+            <p>Guess the background color:</p>
+            <select id="colorOptions">
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="yellow">Yellow</option>
+                <option value="purple">Purple</option>
+            </select>
+            <button onclick="checkColorGuess()">Submit Color Guess</button>
+        </div>
+
+        <div id="numberGuessSection" style="display: none;">
+            <p>Guess a number between 1 and 10:</p>
+            <input type="number" id="numberGuess" min="1" max="10">
+            <button onclick="checkNumberGuess()">Submit Number Guess</button>
+        </div>
+
+        <div id="result"></div>
+        <div id="luckPercentage"></div>
+        <button id="retryButton" onclick="retryGame()">Retry</button>
+
+        <canvas id="luckChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

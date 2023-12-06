@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Editor</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #svg-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    circle, rect {
+      cursor: move;
+      fill: #3498db;
+      stroke: #2980b9;
+      stroke-width: 2;
+    }
+  </style>
+</head>
+<body>
+  <div id="svg-container"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const svgContainer = document.getElementById('svg-container');
+
+      // Create SVG element
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('width', '100%');
+      svg.setAttribute('height', '100%');
+      svgContainer.appendChild(svg);
+
+      // Function to create shapes
+      function createCircle(x, y, radius) {
+        const circle = document.createElementNS(svgNS, 'circle');
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y);
+        circle.setAttribute('r', radius);
+        svg.appendChild(circle);
+        makeDraggable(circle);
+      }
+
+      function createRect(x, y, width, height) {
+        const rect = document.createElementNS(svgNS, 'rect');
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', width);
+        rect.setAttribute('height', height);
+        svg.appendChild(rect);
+        makeDraggable(rect);
+      }
+
+      // Function to make shapes draggable
+      function makeDraggable(element) {
+        let isDragging = false;
+        let initialX, initialY;
+
+        element.addEventListener('mousedown', function(e) {
+          isDragging = true;
+          initialX = e.clientX;
+          initialY = e.clientY;
+        });
+
+        document.addEventListener('mousemove', function(e) {
+          if (isDragging) {
+            const dx = e.clientX - initialX;
+            const dy = e.clientY - initialY;
+
+            const transform = element.getAttribute('transform') || '';
+            const translate = `translate(${dx}, ${dy})`;
+
+            element.setAttribute('transform', `${transform} ${translate}`);
+
+            initialX = e.clientX;
+            initialY = e.clientY;
+          }
+        });
+
+        document.addEventListener('mouseup', function() {
+          isDragging = false;
+        });
+      }
+
+      // Create initial shapes
+      createCircle(50, 50, 30);
+      createRect(150, 50, 80, 60);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+React.js<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React.js Showcase</title>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+  <script type="text/babel">
+    // React component
+    class Counter extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          count: 0
+        };
+      }
+
+      // Handling state change
+      handleIncrement = () => {
+        this.setState({ count: this.state.count + 1 });
+      };
+
+      handleDecrement = () => {
+        this.setState({ count: this.state.count - 1 });
+      };
+
+      render() {
+        return (
+          <div>
+            <h1>React.js Showcase</h1>
+            <p>Counter: {this.state.count}</p>
+            <button onClick={this.handleIncrement}>Increment</button>
+            <button onClick={this.handleDecrement}>Decrement</button>
+          </div>
+        );
+      }
+    }
+
+    // Rendering the component
+    ReactDOM.render(<Counter />, document.getElementById('root'));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    #controlBox {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    #colorSlider, #brightnessSlider, #saturationSlider {
+      width: 80%;
+      margin: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const colorSlider = document.getElementById('colorSlider');
+      const brightnessSlider = document.getElementById('brightnessSlider');
+      const saturationSlider = document.getElementById('saturationSlider');
+      const body = document.body;
+
+      colorSlider.addEventListener('input', updateBackground);
+      brightnessSlider.addEventListener('input', updateBackground);
+      saturationSlider.addEventListener('input', updateBackground);
+
+      function updateBackground() {
+        const colorValue = colorSlider.value;
+        const brightnessValue = brightnessSlider.value;
+        const saturationValue = saturationSlider.value;
+
+        const backgroundColor = `hsl(${colorValue}, ${saturationValue}%, ${brightnessValue}%)`;
+        body.style.backgroundColor = backgroundColor;
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="controlBox">
+    <label for="colorSlider">Color</label>
+    <input type="range" id="colorSlider" min="0" max="360" value="0">
+
+    <label for="brightnessSlider">Brightness</label>
+    <input type="range" id="brightnessSlider" min="0" max="100" value="50">
+
+    <label for="saturationSlider">Saturation</label>
+    <input type="range" id="saturationSlider" min="0" max="100" value="50">
+  </div>
+</body>
+</html>
