@@ -4,7 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luck Calculator Game</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: background-color 0.5s;
+        }
+
+        #game-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        select {
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #luckPercentage {
+            display: none;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        #retryButton {
+            display: none;
+            background-color: #008CBA;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #retryButton:hover {
+            background-color: #0077A6;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,6 +118,115 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <script>
+        const validColors = ["red", "blue", "green", "yellow", "purple"];
+        const maxClicks = 14;  // Maximum number of clicks (7 for each game)
+        let clickCount = -2;   // Counter for button clicks
+        let firstTryPercentage = null;
+        let secondTryPercentage = null;
+        let secretNumber, secretColor;
+
+        function getRandomColor() {
+            const randomIndex = Math.floor(Math.random() * validColors.length);
+            return validColors[randomIndex];
+        }
+
+        function checkColorGuess() {
+            const userColor = document.getElementById('colorOptions').value;
+            clickCount++;
+
+            if (userColor === secretColor) {
+                document.getElementById('result').innerHTML = 'Congratulations! You guessed the correct color!';
+                document.body.style.backgroundColor = userColor;
+                document.getElementById('colorGuessSection').style.display = 'none';
+                document.getElementById('numberGuessSection').style.display = 'block';
+            } else {
+                document.getElementById('result').innerHTML = 'Sorry, try again.';
+            }
+
+            updateLuckPercentage();
+        }
+
+        function checkNumberGuess() {
+            const userNumber = parseInt(document.getElementById('numberGuess').value);
+            clickCount++;
+
+            if (userNumber === secretNumber) {
+                document.getElementById('result').innerHTML = 'Congratulations! You guessed the correct number!';
+                document.body.style.backgroundColor = secretColor;
+                document.getElementById('numberGuessSection').style.display = 'none';
+                showLuckPercentage();
+            } else {
+                document.getElementById('result').innerHTML = 'Sorry, try again.';
+            }
+
+            updateLuckPercentage();
+        }
+
+        function updateLuckPercentage() {
+            if (clickCount >= 0 && clickCount <= maxClicks) {
+                const luckPercentage = Math.floor((maxClicks - clickCount) / maxClicks * 100);
+                document.getElementById('luckPercentage').innerHTML = `Luck Percentage: ${luckPercentage}%`;
+            }
+        }
+
+        function showLuckPercentage() {
+            document.getElementById('luckPercentage').style.display = 'block';
+            document.getElementById('luckPercentage').innerHTML = `Luck Percentage: 100%`;
+            document.getElementById('retryButton').style.display = 'block';
+
+            if (firstTryPercentage === null) {
+                firstTryPercentage = Math.floor((maxClicks - clickCount) / maxClicks * 100);
+            } else {
+                secondTryPercentage = Math.floor((maxClicks - clickCount) / maxClicks * 100);
+
+                // Display the chart
+                displayLuckChart();
+            }
+        }
+
+        function retryGame() {
+            clickCount = 0;
+            document.body.style.backgroundColor = '#fff';
+            document.getElementById('numberGuessSection').style.display = 'none';
+            document.getElementById('colorGuessSection').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('luckPercentage').style.display = 'none';
+            document.getElementById('luckPercentage').innerHTML = '';
+            document.getElementById('retryButton').style.display = 'none';
+            secretNumber = Math.floor(Math.random() * 10) + 1;
+            secretColor = getRandomColor();
+        }
+
+        function displayLuckChart() {
+            const ctx = document.getElementById('luckChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['First Try', 'Second Try'],
+                    datasets: [{
+                        label: 'Luck Percentage',
+                        data: [firstTryPercentage, secondTryPercentage],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial setup
+        secretNumber = Math.floor(Math.random() * 10) + 1;
+        secretColor = getRandomColor();
+    </script>
+
 </body>
 </html>
